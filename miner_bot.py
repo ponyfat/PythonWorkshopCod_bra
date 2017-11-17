@@ -1,3 +1,7 @@
+"""
+Telegram bot for the Miner-Game.
+Language: Python 3.2
+"""
 import telebot
 import os
 import config
@@ -13,6 +17,11 @@ users = {}
 
 
 def registration_check(message):
+    """
+    Checks if the user is playing now.
+    :param message: String received from the user.
+    :return Boolean: Whether the user is registered.
+    """
     if message.chat.id not in users.keys():
         bot.send_message(message.chat.id, 'Начните новую игру')
         return False
@@ -24,6 +33,11 @@ def registration_check(message):
 
 @bot.message_handler(commands=['start'])
 def start(message):
+    """
+    Handles the /start command.
+    :param message: String received from the user.
+    :return: None.
+    """
     bot.send_sticker(message.chat.id, data='CAADAgADCBMAAkKvaQABJS_tlanrZB8C')
     bot.send_message(message.chat.id, constants.HELP_MESSAGE)
     users[message.chat.id] = GameField()
@@ -31,6 +45,12 @@ def start(message):
 
 @bot.message_handler(commands=['new'])
 def new_game_check(message):
+    """
+    Handles the /new <height> <width> [<bombs>] command.
+    Initializes a new game for the user.
+    :param message: String received from the user.
+    :return: None.
+    """
     if message.chat.id not in users.keys():
         users[message.chat.id] = GameField()
     try:
@@ -63,6 +83,11 @@ def new_game_check(message):
 
 @bot.message_handler(commands=['open'])
 def open_cell_check(message):
+    """
+    Handles the /open <x> <y> command.
+    :param message: String received from the user.
+    :return: None.
+    """
     if not registration_check(message):
         return
     try:
@@ -79,6 +104,13 @@ def open_cell_check(message):
 
 
 def open_cell(chat_id, x, y):
+    """
+    Opens the chosen cell and checks whether the user has won or lost.
+    :param chat_id: User's chat_id.
+    :param x: Chosen cell x-coordinate.
+    :param y: Chosen cell y-coordinate.
+    :return: None.
+    """
     result = users[chat_id].open_cell(x, y)
     with open('/'.join([os.getcwd(), 'users/{}.jpg'.format(chat_id)]), 'rb') as photo:
         if result == constants.LOSER:
@@ -96,6 +128,11 @@ def open_cell(chat_id, x, y):
 
 @bot.message_handler(commands=['flag'])
 def flag_cell(message):
+    """
+    Handles the /flag <x> <y> command.
+    :param message:  String received from the user.
+    :return: None.
+    """
     if not registration_check(message):
         return
     try:
@@ -117,6 +154,11 @@ def flag_cell(message):
 
 @bot.message_handler(commands=['remove_flag'])
 def remove_flag_cell(message):
+    """
+    Handles the /remove_flag <x> <y> command.
+    :param message:   String received from the user.
+    :return: None.
+    """
     if not registration_check(message):
         return
     try:
@@ -135,11 +177,22 @@ def remove_flag_cell(message):
 
 @bot.message_handler(commands=['help'])
 def help_(message):
+    """
+    Handles the /help command.
+    Sends the help message to the user.
+    :param message: String received from the user.
+    :return: None
+    """
     bot.send_message(message.chat.id, constants.HELP_MESSAGE)
 
 
 @bot.message_handler()
 def wrong_command(message):
+    """
+     Replies to the unsupported message.
+     :param message: String received from the user.
+     :return: None
+     """
     bot.send_message(message.chat.id, 'Ошибка ввода')
 
 

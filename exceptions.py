@@ -1,3 +1,7 @@
+"""
+Exceptions for the Miner Telegram bot implementation.
+Language: Python 3.2
+"""
 class InputErrorException(Exception):
     pass
 

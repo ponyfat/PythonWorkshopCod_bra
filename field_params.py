@@ -1,3 +1,7 @@
+"""
+FieldParams class for the /new command of the Miner Telegram bot.
+Language: Python 3.2
+"""
 import exceptions
 
 

@@ -1,3 +1,7 @@
+"""
+Constants for the Miner Telegram bot implementation.
+Language: Python 3.2
+"""
 HELP_MESSAGE = """Я бот для игры в сапера.
 Я понимаю только эти команды:
 /start
